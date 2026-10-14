@@ -1,0 +1,880 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Grade 6 Mathematics LMS</title>
+
+<style>
+:root {
+  --navy:#06152c;
+  --blue:#123e76;
+  --cyan:#56dcff;
+  --white:#ffffff;
+  --gold:#ffd36e;
+  --green:#21bb82;
+}
+* { box-sizing:border-box; }
+
+body {
+  margin:0;
+  min-height:100vh;
+  background:linear-gradient(135deg,#06152c,#123e76);
+  color:white;
+  font-family:Arial,Helvetica,sans-serif;
+}
+header {
+  background:#031025;
+  text-align:center;
+  padding:18px;
+  border-bottom:3px solid var(--cyan);
+}
+header h1 {
+  margin:0;
+  font-size:clamp(22px,3.5vw,34px);
+}
+header p {
+  margin:8px 0 0;
+  color:#c7e7ff;
+}
+main {
+  max-width:1050px;
+  margin:22px auto;
+  padding:0 16px;
+}
+.slide {
+  display:none;
+  background:#102b51;
+  border:1px solid #4676a4;
+  border-radius:18px;
+  padding:clamp(18px,3vw,32px);
+  min-height:450px;
+  box-shadow:0 12px 30px #0005;
+}
+.slide.active { display:block; }
+
+h2 { color:var(--cyan); }
+h3 { color:var(--gold); }
+p { line-height:1.6; }
+
+input,select {
+  width:100%;
+  padding:14px;
+  font-size:18px;
+  border-radius:10px;
+  border:2px solid #9ccfff;
+  background:white;
+  color:#10213a;
+}
+label {
+  display:block;
+  margin:15px 0 8px;
+  font-weight:bold;
+}
+button {
+  border:0;
+  background:var(--cyan);
+  color:#06152c;
+  padding:13px 20px;
+  border-radius:10px;
+  font-size:17px;
+  font-weight:bold;
+  cursor:pointer;
+  margin:6px 6px 6px 0;
+}
+button:hover { filter:brightness(1.08); }
+button:disabled {
+  opacity:.4;
+  cursor:not-allowed;
+}
+.secondary {
+  background:#dcecff;
+}
+.green {
+  background:var(--green);
+}
+.controls {
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  margin-top:24px;
+}
+.concepts {
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+  gap:14px;
+}
+.concept {
+  background:#1d4477;
+  padding:17px;
+  border-radius:12px;
+}
+.formula {
+  background:#e9f5ff;
+  color:#08213c;
+  text-align:center;
+  border-radius:10px;
+  padding:15px;
+  margin:10px 0;
+  font-size:23px;
+  font-weight:bold;
+}
+.video-container {
+  width:100%;
+  max-width:880px;
+  margin:auto;
+  aspect-ratio:16/9;
+  background:#000;
+  border-radius:14px;
+  overflow:hidden;
+}
+.video-container iframe {
+  display:block;
+  width:100%;
+  height:100%;
+  border:0;
+}
+.choice {
+  background:#204a7d;
+  border:2px solid transparent;
+  border-radius:12px;
+  padding:15px;
+  margin:10px 0;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  cursor:pointer;
+  font-size:19px;
+}
+.choice:has(input:checked) {
+  border-color:var(--cyan);
+  background:#285c94;
+}
+.choice input {
+  width:auto;
+  transform:scale(1.25);
+}
+.question {
+  font-size:clamp(21px,3vw,28px);
+  line-height:1.5;
+}
+.progress {
+  background:#365675;
+  height:12px;
+  border-radius:20px;
+  overflow:hidden;
+}
+.progress-fill {
+  width:0%;
+  height:100%;
+  background:var(--cyan);
+}
+.feedback {
+  margin-top:18px;
+  background:#e8f4ff;
+  color:#092441;
+  border-radius:10px;
+  padding:15px;
+  font-weight:bold;
+}
+.hidden { display:none !important; }
+.error { color:#ffd36e; }
+.score {
+  color:var(--gold);
+  font-size:40px;
+  font-weight:bold;
+}
+.info {
+  background:#1c4271;
+  border-radius:12px;
+  padding:14px;
+  margin:15px 0;
+}
+footer {
+  text-align:center;
+  color:#c5e5ff;
+  padding:20px;
+}
+@media(max-width:600px) {
+  .controls button { flex:1 1 100%; }
+  .slide { min-height:400px; }
+}
+@media print {
+  body { background:white;color:black; }
+  header,footer,.controls,#answerKeyButton {
+    display:none !important;
+  }
+  main { margin:0;max-width:none; }
+  .slide {
+    display:none !important;
+    border:0;
+    box-shadow:none;
+    color:black;
+  }
+  #resultsSlide {
+    display:block !important;
+  }
+  h2,h3 { color:black; }
+  .score { color:black; }
+  .info { color:black;background:white; }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <h1>📘 PERCENTAGE, BASE AND RATE</h1>
+  <p>GRADE 6 MATHEMATICS | INTERACTIVE LMS</p>
+</header>
+
+<main>
+
+<!-- SLIDE 1: STUDENT INFORMATION -->
+<section class="slide active" id="studentSlide">
+  <h2>👩‍🎓 Welcome, Learner!</h2>
+  <p>Enter your information to begin.</p>
+
+  <label for="studentName">Complete Name</label>
+  <input id="studentName" type="text"
+         placeholder="Enter your complete name">
+
+  <label for="studentSection">Section</label>
+  <select id="studentSection">
+    <option value="">Select your section</option>
+    <option value="Grade 6 - Corrales">
+      Grade 6 - Corrales
+    </option>
+    <option value="Grade 6 - Dianga">
+      Grade 6 - Dianga
+    </option>
+    <option value="Grade 6 - Narvaez">
+      Grade 6 - Narvaez
+    </option>
+  </select>
+
+  <p id="studentError" class="error" role="alert"></p>
+
+  <div class="controls">
+    <button type="button" id="startButton">
+      Start Lesson ➜
+    </button>
+  </div>
+</section>
+
+<!-- SLIDE 2: CONCEPT REVIEW -->
+<section class="slide" id="lessonSlide">
+  <h2>📚 Slide 1: Concept Review</h2>
+  <p>There are three important terms in percentage problems.</p>
+
+  <div class="concepts">
+    <div class="concept">
+      <h3>Percentage (P)</h3>
+      <p>The part or amount being considered.</p>
+    </div>
+    <div class="concept">
+      <h3>Base (B)</h3>
+      <p>The whole or total amount.</p>
+    </div>
+    <div class="concept">
+      <h3>Rate (R)</h3>
+      <p>The percent used to compare the part with the whole.</p>
+    </div>
+  </div>
+
+  <h3>Important Formulas</h3>
+  <div class="formula">P = B × R</div>
+  <div class="formula">B = P ÷ R</div>
+  <div class="formula">R = P ÷ B</div>
+
+  <p>Remember: Change the percent into decimal form before using the formula.</p>
+
+  <div class="controls">
+    <button type="button" class="secondary"
+            id="lessonBack">⬅ Back</button>
+    <button type="button" id="lessonNext">
+      Next Slide: Video Lesson ➜
+    </button>
+  </div>
+</section>
+
+<!-- SLIDE 3: VIDEO -->
+<section class="slide" id="videoSlide">
+  <h2>🎬 Slide 2: Video Lesson</h2>
+  <p>Watch the video carefully before answering the formative assessment.</p>
+
+  <div class="video-container">
+    <iframe
+      id="lessonVideo"
+      title="Percentage, Base and Rate Video Lesson"
+      src="about:blank"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+      referrerpolicy="strict-origin-when-cross-origin"
+      allowfullscreen>
+    </iframe>
+  </div>
+
+  <p>
+    <a href="https://www.youtube.com/watch?v=WIkfkR15ElM"
+       target="_blank"
+       rel="noopener noreferrer"
+       style="color:#56dcff">
+       Open the video directly on YouTube
+    </a>
+  </p>
+
+  <div class="controls">
+    <button type="button" class="secondary"
+            id="videoBack">⬅ Previous Slide</button>
+    <button type="button" id="videoNext">
+      Next Slide: Formative Assessment ➜
+    </button>
+  </div>
+</section>
+
+<!-- SLIDE 4: ASSESSMENT INSTRUCTIONS -->
+<section class="slide" id="assessmentIntro">
+  <h2>📝 Slide 3: Formative Assessment</h2>
+
+  <div class="info">
+    <h3>Instructions</h3>
+    <p><b>Part A:</b> Answer 5 multiple-choice questions.</p>
+    <p><b>Part B:</b> Solve 5 real-life situation problems.</p>
+    <p>For Part B, type your numerical answer in the box.</p>
+    <p>Each correct answer is worth 1 point.</p>
+    <p><b>Total: 10 points.</b></p>
+  </div>
+
+  <div class="controls">
+    <button type="button" class="secondary"
+            id="introBack">⬅ Back to Video</button>
+    <button type="button" class="green"
+            id="beginAssessment">
+      Begin Formative Assessment ➜
+    </button>
+  </div>
+</section>
+
+<!-- SLIDE 5: QUESTIONS -->
+<section class="slide" id="quizSlide">
+  <p id="learnerBanner"></p>
+
+  <h2 id="partTitle"></h2>
+  <p id="questionNumber"></p>
+
+  <div class="progress">
+    <div class="progress-fill" id="progressFill"></div>
+  </div>
+
+  <h3 class="question" id="questionText"></h3>
+
+  <div id="answerArea"></div>
+
+  <div id="feedback" class="feedback hidden"
+       aria-live="polite"></div>
+
+  <div class="controls">
+    <button type="button" class="secondary"
+            id="previousQuestion">
+      ⬅ Previous
+    </button>
+
+    <button type="button" id="checkAnswer">
+      Check Answer
+    </button>
+
+    <button type="button" class="green"
+            id="nextQuestion">
+      Next Question ➜
+    </button>
+  </div>
+</section>
+
+<!-- SLIDE 6: RESULTS -->
+<section class="slide" id="resultsSlide">
+  <h2>🏆 Formative Assessment Results</h2>
+
+  <div class="info">
+    <p><b>Student Name:</b> <span id="resultName"></span></p>
+    <p><b>Section:</b> <span id="resultSection"></span></p>
+  </div>
+
+  <p class="score" id="totalScore"></p>
+  <p id="partAScore"></p>
+  <p id="partBScore"></p>
+  <p id="percentScore"></p>
+  <h3 id="resultMessage"></h3>
+
+  <div class="controls">
+    <button type="button" id="answerKeyButton">
+      Show / Hide Answer Key
+    </button>
+    <button type="button" id="printButton">
+      🖨 Print Results
+    </button>
+    <button type="button" class="secondary"
+            id="restartButton">
+      Start Again
+    </button>
+  </div>
+
+  <div id="answerKey" class="info hidden">
+    <h3>Answer Key</h3>
+    <ol id="answerKeyList"></ol>
+  </div>
+
+  <p style="font-size:14px;color:#d2e6ff">
+    Note: Results are displayed in this browser only.
+    They are not automatically submitted or saved to a class record.
+  </p>
+</section>
+
+</main>
+
+<footer>
+  Grade 6 Mathematics | Interactive Learning Management Activity
+</footer>
+
+<script>
+"use strict";
+
+// ===========================
+// CONFIGURATION
+// ===========================
+
+const VIDEO_ID = "WIkfkR15ElM";
+
+const questions = [
+  {
+    type:"mc",
+    text:"What is 25% of 80?",
+    choices:["15","20","25","30"],
+    answer:"20",
+    explanation:"80 × 0.25 = 20."
+  },
+  {
+    type:"mc",
+    text:"15 is 30% of what number?",
+    choices:["30","40","50","60"],
+    answer:"50",
+    explanation:"15 ÷ 0.30 = 50."
+  },
+  {
+    type:"mc",
+    text:"12 is what percent of 60?",
+    choices:["10%","15%","20%","25%"],
+    answer:"20%",
+    explanation:"12 ÷ 60 × 100 = 20%."
+  },
+  {
+    type:"mc",
+    text:"A class has 200 pupils. If 15% are absent, how many are absent?",
+    choices:["15","20","30","35"],
+    answer:"30",
+    explanation:"200 × 0.15 = 30 pupils."
+  },
+  {
+    type:"mc",
+    text:"What is 40% of 90?",
+    choices:["30","32","36","40"],
+    answer:"36",
+    explanation:"90 × 0.40 = 36."
+  },
+  {
+    type:"input",
+    text:"A class has 40 pupils. If 25% are absent, how many pupils are absent?",
+    answer:10,
+    unit:"pupils",
+    explanation:"40 × 0.25 = 10 pupils."
+  },
+  {
+    type:"input",
+    text:"50 out of 200 pupils joined an activity. What is the rate, expressed as a percentage?",
+    answer:25,
+    unit:"%",
+    explanation:"50 ÷ 200 × 100 = 25%."
+  },
+  {
+    type:"input",
+    text:"A school bag costs ₱800 and has a 10% discount. How much is the discount in pesos?",
+    answer:80,
+    unit:"pesos",
+    explanation:"800 × 0.10 = ₱80."
+  },
+  {
+    type:"input",
+    text:"30 pupils represent 75% of a class. How many pupils are in the whole class?",
+    answer:40,
+    unit:"pupils",
+    explanation:"30 ÷ 0.75 = 40 pupils."
+  },
+  {
+    type:"input",
+    text:"45 out of 300 residents joined a community clean-up. What is the rate, expressed as a percentage?",
+    answer:15,
+    unit:"%",
+    explanation:"45 ÷ 300 × 100 = 15%."
+  }
+];
+
+// ===========================
+// STATE
+// ===========================
+
+let student = { name:"", section:"" };
+let currentIndex = 0;
+let responses = Array(questions.length).fill("");
+let videoLoaded = false;
+
+// ===========================
+// ELEMENT HELPERS
+// ===========================
+
+function el(id) {
+  return document.getElementById(id);
+}
+
+function showSlide(id) {
+  document.querySelectorAll(".slide").forEach(slide => {
+    slide.classList.remove("active");
+  });
+
+  el(id).classList.add("active");
+
+  // Stop the YouTube player when leaving the video slide.
+  if (id !== "videoSlide" && videoLoaded) {
+    el("lessonVideo").src = "about:blank";
+    videoLoaded = false;
+  }
+
+  window.scrollTo(0,0);
+}
+
+function loadVideo() {
+  if (!videoLoaded) {
+    el("lessonVideo").src =
+      "https://www.youtube-nocookie.com/embed/" +
+      VIDEO_ID +
+      "?rel=0&playsinline=1";
+    videoLoaded = true;
+  }
+}
+
+function openVideoSlide() {
+  showSlide("videoSlide");
+  loadVideo();
+}
+
+// ===========================
+// STUDENT INFORMATION
+// ===========================
+
+function startLesson() {
+  const name = el("studentName").value.trim();
+  const section = el("studentSection").value;
+
+  if (!name || !section) {
+    el("studentError").textContent =
+      "Please enter your name and select your section.";
+    return;
+  }
+
+  student = {name,section};
+  el("studentError").textContent = "";
+  showSlide("lessonSlide");
+}
+
+// ===========================
+// ASSESSMENT
+// ===========================
+
+function startAssessment() {
+  currentIndex = 0;
+  responses = Array(questions.length).fill("");
+
+  el("learnerBanner").textContent =
+    student.name + " | " + student.section;
+
+  showSlide("quizSlide");
+  renderQuestion();
+}
+
+function saveCurrentAnswer() {
+  const q = questions[currentIndex];
+
+  if (q.type === "mc") {
+    const selected = document.querySelector(
+      'input[name="quizChoice"]:checked'
+    );
+    if (selected) {
+      responses[currentIndex] = selected.value;
+    }
+  } else {
+    const input = el("numericAnswer");
+    if (input) {
+      responses[currentIndex] = input.value.trim();
+    }
+  }
+}
+
+function renderQuestion() {
+  const q = questions[currentIndex];
+
+  el("partTitle").textContent =
+    currentIndex < 5
+      ? "Part A: Multiple Choice"
+      : "Part B: Real-Life Situations";
+
+  el("questionNumber").textContent =
+    "Question " + (currentIndex + 1) +
+    " of " + questions.length;
+
+  el("progressFill").style.width =
+    ((currentIndex + 1) / questions.length * 100) + "%";
+
+  el("questionText").textContent =
+    (currentIndex + 1) + ". " + q.text;
+
+  const area = el("answerArea");
+  area.replaceChildren();
+
+  if (q.type === "mc") {
+    q.choices.forEach((choice,index) => {
+      const label = document.createElement("label");
+      label.className = "choice";
+
+      const radio = document.createElement("input");
+      radio.type = "radio";
+      radio.name = "quizChoice";
+      radio.value = choice;
+      radio.checked = responses[currentIndex] === choice;
+
+      radio.addEventListener("change", () => {
+        responses[currentIndex] = choice;
+        el("feedback").classList.add("hidden");
+      });
+
+      const text = document.createElement("span");
+      text.textContent =
+        String.fromCharCode(65 + index) + ". " + choice;
+
+      label.append(radio,text);
+      area.appendChild(label);
+    });
+  } else {
+    const label = document.createElement("label");
+    label.htmlFor = "numericAnswer";
+    label.textContent = "Encode your numerical answer:";
+
+    const input = document.createElement("input");
+    input.type = "number";
+    input.step = "any";
+    input.id = "numericAnswer";
+    input.placeholder = "Type your answer here";
+    input.value = responses[currentIndex];
+
+    input.addEventListener("input", () => {
+      responses[currentIndex] = input.value;
+      el("feedback").classList.add("hidden");
+    });
+
+    const unit = document.createElement("p");
+    unit.textContent =
+      "Enter the number only. Unit: " + q.unit;
+
+    area.append(label,input,unit);
+  }
+
+  el("feedback").classList.add("hidden");
+
+  el("previousQuestion").disabled = currentIndex === 0;
+
+  el("nextQuestion").textContent =
+    currentIndex === questions.length - 1
+      ? "Finish Assessment ✓"
+      : "Next Question ➜";
+}
+
+function answerIsCorrect(index) {
+  const q = questions[index];
+  const value = String(responses[index]).trim();
+
+  if (value === "") return false;
+
+  if (q.type === "mc") {
+    return value === q.answer;
+  }
+
+  const numeric = Number(value);
+
+  return Number.isFinite(numeric) &&
+    Math.abs(numeric - q.answer) < 0.000001;
+}
+
+function checkAnswer() {
+  saveCurrentAnswer();
+
+  const feedback = el("feedback");
+
+  if (String(responses[currentIndex]).trim() === "") {
+    feedback.textContent =
+      "Please select or enter an answer first.";
+  } else if (answerIsCorrect(currentIndex)) {
+    feedback.textContent =
+      "✅ Correct! " + questions[currentIndex].explanation;
+  } else {
+    feedback.textContent =
+      "❌ Incorrect. " + questions[currentIndex].explanation;
+  }
+
+  feedback.classList.remove("hidden");
+}
+
+function changeQuestion(direction) {
+  saveCurrentAnswer();
+
+  if (direction === 1 &&
+      currentIndex === questions.length - 1) {
+    finishAssessment();
+    return;
+  }
+
+  currentIndex += direction;
+
+  if (currentIndex < 0) currentIndex = 0;
+  if (currentIndex >= questions.length) {
+    currentIndex = questions.length - 1;
+  }
+
+  renderQuestion();
+}
+
+// ===========================
+// RESULTS
+// ===========================
+
+function finishAssessment() {
+  let partA = 0;
+  let partB = 0;
+
+  questions.forEach((q,index) => {
+    if (answerIsCorrect(index)) {
+      if (index < 5) partA++;
+      else partB++;
+    }
+  });
+
+  const total = partA + partB;
+  const percent = total * 10;
+
+  el("resultName").textContent = student.name;
+  el("resultSection").textContent = student.section;
+
+  el("totalScore").textContent =
+    total + " / 10";
+
+  el("partAScore").textContent =
+    "Multiple Choice: " + partA + " / 5";
+
+  el("partBScore").textContent =
+    "Real-Life Situations: " + partB + " / 5";
+
+  el("percentScore").textContent =
+    "Percentage Score: " + percent + "%";
+
+  el("resultMessage").textContent =
+    percent >= 80
+      ? "🎉 Excellent work!"
+      : percent >= 60
+      ? "Good effort! Keep practicing."
+      : "Review the lesson and try again.";
+
+  const answerKeyList = el("answerKeyList");
+  answerKeyList.replaceChildren();
+
+  questions.forEach(q => {
+    const item = document.createElement("li");
+    item.textContent =
+      q.answer +
+      (q.type === "input" ? " " + q.unit : "");
+    answerKeyList.appendChild(item);
+  });
+
+  el("answerKey").classList.add("hidden");
+  showSlide("resultsSlide");
+}
+
+function restartActivity() {
+  student = {name:"",section:""};
+  currentIndex = 0;
+  responses = Array(questions.length).fill("");
+
+  el("studentName").value = "";
+  el("studentSection").value = "";
+  el("studentError").textContent = "";
+
+  showSlide("studentSlide");
+}
+
+// ===========================
+// BUTTON EVENTS
+// ===========================
+
+el("startButton").addEventListener(
+  "click",startLesson
+);
+
+el("lessonBack").addEventListener(
+  "click",() => showSlide("studentSlide")
+);
+
+el("lessonNext").addEventListener(
+  "click",openVideoSlide
+);
+
+el("videoBack").addEventListener(
+  "click",() => showSlide("lessonSlide")
+);
+
+el("videoNext").addEventListener(
+  "click",() => showSlide("assessmentIntro")
+);
+
+el("introBack").addEventListener(
+  "click",openVideoSlide
+);
+
+el("beginAssessment").addEventListener(
+  "click",startAssessment
+);
+
+el("previousQuestion").addEventListener(
+  "click",() => changeQuestion(-1)
+);
+
+el("nextQuestion").addEventListener(
+  "click",() => changeQuestion(1)
+);
+
+el("checkAnswer").addEventListener(
+  "click",checkAnswer
+);
+
+el("answerKeyButton").addEventListener(
+  "click",() => {
+    el("answerKey").classList.toggle("hidden");
+  }
+);
+
+el("printButton").addEventListener(
+  "click",() => window.print()
+);
+
+el("restartButton").addEventListener(
+  "click",restartActivity
+);
+
+</script>
+</body>
+</html>
